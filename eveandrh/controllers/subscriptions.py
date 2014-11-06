@@ -109,3 +109,24 @@ def on_updated(resource_name, updates, original):
                     }
 
                     result = eve_post_internal("_jobs", payload)
+
+
+def on_replaced(resource_name, new_item, original):
+    if not resource_name.startswith("__"):  # protection from dunder resources...maybe
+        if resource_name != "subscriptions":  # circular protection? maybe implement this later
+            subscriptions = apiapp.data.driver.db['subscriptions']
+            event_string = "{0}.replaced".format(resource_name)
+            relevant_subscriptions = subscriptions.find({"event": event_string})
+
+            for sub in relevant_subscriptions:
+                if is_filter_match(resource_name, sub, new_item) or is_filter_match(resource_name, sub, original):
+                    payload = {
+                        "claimed": False,
+                        "status": 0,
+                        "target_url": sub['target_url'],
+                        "result": "",
+                        "payload": dict(new=new_item, original=original),
+                        "event": event_string
+                    }
+
+                    result = eve_post_internal("_jobs", payload)

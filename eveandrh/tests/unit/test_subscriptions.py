@@ -40,6 +40,14 @@ class TestSubscriptions(TestBaseMinimal):
         )
         return self.local_client.post("/api/v1/subscriptions", data=json.dumps(payload), headers=self.headers)
 
+    def post_dummy_book_replaced_subscription_with_name_filter(self):
+        payload = dict(
+            event="books.replaced",
+            target_url="http://localhost:6000/dummy",
+            filter='{"name":"Testsuite Made up Names by Tim King"}'
+        )
+        return self.local_client.post("/api/v1/subscriptions", data=json.dumps(payload), headers=self.headers)
+
     def post_dummy_book(self, name=None):
         name = name if name is not None else "Testsuite Made up Names by Tim King"
         payload = dict(
@@ -63,6 +71,22 @@ class TestSubscriptions(TestBaseMinimal):
         url = "/api/v1/books/{_id}".format(**original_item)
 
         return self.local_client.patch(url, data=json.dumps(payload), headers=headers)
+
+    def put_dummy_book(self, original_item, name=None):
+        name = name if name is not None else "Testsuite Made up Name 2nd Edition by Tim King"
+        payload = dict(
+            name=name
+        )
+
+        headers = {
+            "If-Match": original_item['_etag']
+        }
+
+        headers.update(self.headers)
+
+        url = "/api/v1/books/{_id}".format(**original_item)
+
+        return self.local_client.put(url, data=json.dumps(payload), headers=headers)
 
     def get_jobs(self):
         return json.loads(self.local_client.get("/api/v1/_jobs").data.decode('utf8'))['_items']
@@ -184,3 +208,23 @@ class TestSubscriptions(TestBaseMinimal):
         jobs = self.get_jobs()
 
         self.assertFalse(jobs)
+
+    def test_replace_item(self):
+        post_response = self.post_dummy_book()
+        original_item = json.loads(post_response.data.decode('utf8'))
+
+        put_result = self.put_dummy_book(original_item)
+
+        self.assertEqual(put_result.status_code, 200)
+
+    def test_replace_item_with_sub_name_filter(self):
+        post_response = self.post_dummy_book()
+        original_item = json.loads(post_response.data.decode('utf8'))
+
+        self.post_dummy_book_replaced_subscription_with_name_filter()
+
+        put_result = self.put_dummy_book(original_item)
+
+        jobs = self.get_jobs()
+
+        self.assertTrue(jobs)

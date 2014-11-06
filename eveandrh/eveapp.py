@@ -15,6 +15,7 @@ class Eveandrh():
     def add_rest_hook_events(self):
         self.eveapp.on_inserted += subscriptions.on_created
         self.eveapp.on_updated += subscriptions.on_updated
+        self.eveapp.on_replaced += subscriptions.on_replaced
 
     def patch_existing_validator(self):
         """Patches whatever validator class is in use with the following additions

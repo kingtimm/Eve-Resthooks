@@ -11,7 +11,7 @@ SERVER_NAME = 'localhost:5000'
 
 books = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
-    'item_methods': ['GET', 'PATCH', 'DELETE'],
+    'item_methods': ['GET', 'PUT', 'PATCH', 'DELETE'],
     'schema': {
         'name': {'type': 'string'}
     }
