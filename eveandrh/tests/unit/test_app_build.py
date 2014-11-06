@@ -17,3 +17,8 @@ class TestAppBuild(TestBaseMinimal):
         name = repr(self.apiapp.validator)
 
         self.assertTrue("EveandrhValidator" in name)
+
+    def test_config_has_eveandrh_endpoints(self):
+
+        self.assertTrue("subscriptions" in self.apiapp.config['DOMAIN'].keys())
+        self.assertTrue("_jobs" in self.apiapp.config['DOMAIN'].keys())

@@ -1,11 +1,14 @@
-from eve.io.mongo import Validator
+from eveandrh.domain import DOMAIN
 from eveandrh.controllers import subscriptions
 from flask import current_app as app
+from eveandrh.exceptions import DomainConflictException
 
 
 class Eveandrh():
+
     def __init__(self, Eveapp):
         self.eveapp = Eveapp
+        self.patch_existing_domain()
         self.patch_existing_validator()
         self.add_rest_hook_events()
 
@@ -28,3 +31,18 @@ class Eveandrh():
                                                                                                     'target_url']))
 
         self.eveapp.validator = EveandrhValidator
+
+    def patch_existing_domain(self):
+        """Patches the domain currently in use to add the jobs and subscriptions endpoints
+        """
+
+        overlap = set(self.eveapp.config["DOMAIN"].keys()).intersection(set(DOMAIN.keys()))
+
+        if not overlap:
+            with self.eveapp.app_context():
+                self.eveapp.config["DOMAIN"].update(DOMAIN)
+
+            for k in DOMAIN.keys():
+                self.eveapp.register_resource(k, DOMAIN[k])
+        else:
+            raise DomainConflictException()

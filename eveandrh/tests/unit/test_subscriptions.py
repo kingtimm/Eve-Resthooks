@@ -58,3 +58,31 @@ class TestSubscriptions(TestBaseMinimal):
         subscriptions = self.get_subscriptions()
 
         self.assertEqual(len(subscriptions), 1)
+
+    def test_add_subscription_different_target_makes_two_jobs(self):
+        sub1 = self.post_dummy_book_created_subscription()
+
+        payload = dict(
+            event="books.created",
+            target_url="http://remotehost:6000/dummy",
+        )
+
+        sub2 = self.local_client.post("/api/v1/subscriptions", data=json.dumps(payload), headers=self.headers)
+
+        subscriptions = self.get_subscriptions()
+
+        self.assertEqual(len(subscriptions), 2)
+
+    def test_add_subscription_different_event_makes_two_jobs(self):
+        sub1 = self.post_dummy_book_created_subscription()
+
+        payload = dict(
+            event="books.updated",
+            target_url="http://localhost:6000/dummy",
+        )
+
+        sub2 = self.local_client.post("/api/v1/subscriptions", data=json.dumps(payload), headers=self.headers)
+
+        subscriptions = self.get_subscriptions()
+
+        self.assertEqual(len(subscriptions), 2)
