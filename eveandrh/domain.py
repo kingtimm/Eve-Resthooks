@@ -1,6 +1,6 @@
 subscriptions = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
-    'item_methods': ['GET', 'PATCH', 'DELETE'],
+    'item_methods': ['GET', 'PUT', 'PATCH', 'DELETE'],
     'schema': {
         'event': {
             'nodupesubs': 'true',

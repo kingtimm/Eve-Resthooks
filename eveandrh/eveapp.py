@@ -7,12 +7,18 @@ from eveandrh.exceptions import DomainConflictException
 class Eveandrh():
 
     def __init__(self, Eveapp):
+        """Patches an eve app to use Rest Hooks
+
+        :param Eveapp: An Eve App to modify to use Rest Hooks
+        """
         self.eveapp = Eveapp
         self.patch_existing_domain()
         self.patch_existing_validator()
         self.add_rest_hook_events()
 
     def add_rest_hook_events(self):
+        """Adds eve Events handlers for crud operations on the db.
+        """
         self.eveapp.on_inserted += subscriptions.on_created
         self.eveapp.on_updated += subscriptions.on_updated
         self.eveapp.on_replaced += subscriptions.on_replaced
