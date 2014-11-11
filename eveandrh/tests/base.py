@@ -94,6 +94,12 @@ class TestMethodsBase(TestBaseMinimal):
 
         return self.local_client.put(url, data=payload, headers=headers)
 
+    def _delete(self, resource, etag, item):
+        payload = {}
+        headers, _, url = self._setup_change_operation(etag, item, payload, resource)
+
+        return self.local_client.delete(url, headers=headers)
+
     def _parse_get_items(self, response):
         return json.loads(response.data.decode('utf8'))['_items']
 
