@@ -3,7 +3,7 @@ from threading import Thread
 from flask import Flask, request
 import requests
 from eve.render import render_json as eve_render_json
-from eveandrh.tests.test_subscriptions import TestSubscriptions
+from eve_resthooks.tests.test_subscriptions import TestSubscriptions
 
 subscribed_app = Flask(__name__)
 subscribed_app.__called__ = False

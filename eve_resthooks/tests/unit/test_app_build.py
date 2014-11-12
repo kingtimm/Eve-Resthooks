@@ -1,4 +1,4 @@
-from eveandrh.tests.base import TestBaseMinimal
+from eve_resthooks.tests.base import TestBaseMinimal
 
 
 class TestAppBuild(TestBaseMinimal):
@@ -16,9 +16,9 @@ class TestAppBuild(TestBaseMinimal):
 
         name = repr(self.apiapp.validator)
 
-        self.assertTrue("EveandrhValidator" in name)
+        self.assertTrue("everesthooksvalidator" in name.lower())
 
-    def test_config_has_eveandrh_endpoints(self):
+    def test_config_has_everh_endpoints(self):
 
         self.assertTrue("subscriptions" in self.apiapp.config['DOMAIN'].keys())
         self.assertTrue("_jobs" in self.apiapp.config['DOMAIN'].keys())

@@ -1,5 +1,5 @@
 import unittest
-from eveandrh.controllers import subscriptions
+from eve_resthooks.controllers import subscriptions
 
 
 class TestEveEventParsing(unittest.TestCase):

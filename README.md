@@ -1,8 +1,8 @@
-#EVEANDRH
+#Eve-Resthooks
 
 ## Introduction
 
-Eveandrh = Eve + Rest Hooks
+Eve-Resthooks = Eve + Rest Hooks
 
 [Rest hooks](http://resthooks.org/) allow your Eve app to notify other services/clients of operations on your Eve API
 app via REST. Follow the link to find out more information. In the rest hooks authors' own words:

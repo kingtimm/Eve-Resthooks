@@ -3,8 +3,8 @@ import os
 from unittest import TestCase
 from eve import Eve
 from pymongo import MongoClient
-from eveandrh.eveapp import Eveandrh
-from eveandrh.tests.testsettings import *
+from eve_resthooks.eveapp import EveRestHooks
+from eve_resthooks.tests.testsettings import *
 from urllib.parse import urljoin
 
 class TestBaseMinimal(TestCase):
@@ -17,7 +17,7 @@ class TestBaseMinimal(TestCase):
         self.setupDB()
 
         self.apiapp = Eve(settings=settings_path)
-        self.eveandrh = Eveandrh(self.apiapp)
+        self.everh = EveRestHooks(self.apiapp)
 
         self.local_client = self.apiapp.test_client()
 

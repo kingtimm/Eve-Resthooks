@@ -30,6 +30,7 @@ Examples:
     
     "{'name':'A certain book title'}"
 
+Only items with that resource will be returned.
 
 ## Resource Operations
 

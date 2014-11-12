@@ -1,5 +1,5 @@
 import json
-from eveandrh.tests.base import TestMethodsBase
+from eve_resthooks.tests.base import TestMethodsBase
 
 
 class TestMethodsUpdate(TestMethodsBase):

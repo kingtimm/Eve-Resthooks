@@ -1,11 +1,10 @@
-from eveandrh.domain import DOMAIN
-from eveandrh.controllers import subscriptions
+from eve_resthooks.domain import DOMAIN
+from eve_resthooks.controllers import subscriptions
 from flask import current_app as app
-from eveandrh.exceptions import DomainConflictException
+from eve_resthooks.exceptions import DomainConflictException
 
 
-class Eveandrh():
-
+class EveRestHooks():
     def __init__(self, Eveapp):
         """Patches an eve app to use Rest Hooks
 
@@ -29,7 +28,7 @@ class Eveandrh():
         """
         cls = self.eveapp.validator
 
-        class EveandrhValidator(cls):
+        class EveResthooksValidator(cls):
             def _validate_nodupesubs(self, nodupesubs, field, value):
                 if nodupesubs and self.resource == "subscriptions":
                     query = {"event": self.document['event'], "target_url": self.document['target_url']}
@@ -39,7 +38,7 @@ class Eveandrh():
                                                                                                 self.document[
                                                                                                     'target_url']))
 
-        self.eveapp.validator = EveandrhValidator
+        self.eveapp.validator = EveResthooksValidator
 
     def patch_existing_domain(self):
         """Patches the domain currently in use to add the jobs and subscriptions endpoints
