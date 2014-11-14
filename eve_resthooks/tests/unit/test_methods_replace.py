@@ -14,7 +14,7 @@ class TestMethodsUpdate(TestMethodsBase):
         payload = dict(
             event="books.replaced",
             target_url="http://localhost:6000/dummy",
-            filter='{{"name":{0}}}'.format(self.book_name)
+            filter='{{"name":"{0}"}}'.format(self.book_name)
         )
         self._post("subscriptions", payload)
 
