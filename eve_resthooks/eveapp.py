@@ -1,3 +1,4 @@
+from events import Events
 from eve_resthooks.domain import DOMAIN
 from eve_resthooks.controllers import subscriptions
 from flask import current_app as app
@@ -13,9 +14,9 @@ class EveRestHooks():
         self.eveapp = Eveapp
         self.patch_existing_domain()
         self.patch_existing_validator()
-        self.add_rest_hook_events()
+        self.add_rest_hook_events_to_eve()
 
-    def add_rest_hook_events(self):
+    def add_rest_hook_events_to_eve(self):
         """Adds eve Events handlers for crud operations on the db.
         """
         self.eveapp.on_inserted += subscriptions.on_created

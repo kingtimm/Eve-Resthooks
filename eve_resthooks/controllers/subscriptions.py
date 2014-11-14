@@ -54,7 +54,9 @@ def _compare_dictionaries(filter, item):
 
 
 def is_filter_match(resource, subscription, item):
+    """Checks if the db operation's item meets the criteria of a certain subscription.
 
+    """
     filter_string = subscription.get('filter', "{}")
     filter = json.loads(filter_string)
 
@@ -75,6 +77,12 @@ def is_filter_match(resource, subscription, item):
         return _compare_dictionaries(filter, item)
 
 
+def _post_job_with_payload(payload):
+    post_result, _, _, _ = eve_post_internal("_jobs", payload)
+
+    return post_result
+
+
 def _post_jobs_for_created_or_deleted_item(event_string, item, resource_name, subscriptions):
     relevant_subscriptions = subscriptions.find({"event": event_string})
     for sub in relevant_subscriptions:
@@ -88,7 +96,7 @@ def _post_jobs_for_created_or_deleted_item(event_string, item, resource_name, su
                 "event": event_string
             }
 
-            result = eve_post_internal("_jobs", payload)
+            _post_job_with_payload(payload)
 
 
 def _post_jobs_for_existing_item_that_changed(event_string, new, original, resource_name, subscriptions):
@@ -104,7 +112,7 @@ def _post_jobs_for_existing_item_that_changed(event_string, new, original, resou
                 "event": event_string
             }
 
-            result = eve_post_internal("_jobs", payload)
+            _post_job_with_payload(payload)
 
 
 def on_created(resource_name, items):

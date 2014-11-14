@@ -17,7 +17,7 @@ For even more reasons, check out this blog post: [HTTP Requests are Hard] (http:
 
 The following data is passed with each:
 
-"claimed": False,
+    "claimed": False,
                 "status": 0,
                 "target_url": sub['target_url'],
                 "result": "",
@@ -62,4 +62,23 @@ A changed payload is sent when the database operation is either Replaced or Upda
 
 An existence payload is sent when the database operation is either Created or Deleted.
 
+# Your Own Events
 
+Instead of polling the _jobs endpoint, you could write your own event handlers when there is a job added. I.E.
+
+- Add it to a celery queue
+- Add to redis
+- Run your own little threadpool, asyncio, async requests, etc.
+
+This can be done by using the Events built into Eve. (I actually started writing my own version, but this is better).
+
+    def add_task(items):
+        for item in items:
+            Task(item)
+            
+    eveapp.on_inserted__jobs += add_task
+    
+Adding this event handler will send the job right into your own function.
+
+It'll have a field for ```_id``` and ```_links``` so your function could even report back to the db that the task was
+completed using the payload above.

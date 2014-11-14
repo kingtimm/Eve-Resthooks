@@ -7,6 +7,7 @@ from eve_resthooks.eveapp import EveRestHooks
 from eve_resthooks.tests.testsettings import *
 from urllib.parse import urljoin
 
+
 class TestBaseMinimal(TestCase):
     def setUp(self):
         settings_path = os.path.join(os.path.dirname(
@@ -39,6 +40,8 @@ class TestBaseMinimal(TestCase):
 
 class TestMethodsBase(TestBaseMinimal):
     def setUp(self):
+        self.book_name = "Testsuite Made up Names by Tim King"
+
         self.event_created = "books.created"
         self.event_replaced = "books.replaced"
         self.event_updated = "books.updated"
@@ -114,7 +117,7 @@ class TestMethodsBase(TestBaseMinimal):
         return self._parse_get_items(response)
 
     def post_dummy_book(self, name=None):
-        name = name if name is not None else "Testsuite Made up Names by Tim King"
+        name = name if name is not None else self.book_name
         payload = dict(
             name=name,
         )
